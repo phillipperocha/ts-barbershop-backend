@@ -1,0 +1,64 @@
+version: '3.7'
+
+services:
+  barbershop_postgres:
+    image: 'postgres:11.5-alpine'
+    container_name: 'barbershop_postgres'
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - barbershop_postgres_data:/var/lib/postgresql/data
+    networks:
+      - barbershop-network
+
+  barbershop_redis:
+    image: redis:latest
+    container_name: 'barbershop_redis'
+    restart: always
+    expose:
+      - 6379
+    volumes:
+      - barbershop_redis_data:/data
+    depends_on: ['barbershop_postgres']
+    networks:
+      - barbershop-network
+
+  barbershop_mongo:
+    image: mongo
+    restart: always
+    container_name: 'barbershop_mongo'
+    ports:
+      - '27017:27017'
+    volumes:
+      - barbershop_mongo_data:/data/db
+    depends_on: ['barbershop_redis']
+    networks:
+      - barbershop-network
+
+  barbershop_server:
+    build:
+      context: .
+    container_name: 'barbershop_server'
+    restart: always
+    ports:
+      - '3333:3333'
+    volumes:
+      - '.:/usr/backend'
+      - '/usr/backend/node_modules'
+    depends_on: ['barbershop_mongo']
+    networks:
+      - barbershop-network
+
+volumes:
+  barbershop_postgres_data:
+  barbershop_mongo_data:
+  barbershop_redis_data:
+
+networks:
+  barbershop-network:
+    driver: bridge
