@@ -12,13 +12,10 @@ export default class CreateAppointments1589073667325
         columns: [
           {
             name: 'id',
-            // Vamos utilizar uuid para gerar os ids
             type: 'varchar',
-            // Primary Key
             isPrimary: true,
-            // Pra ele gerar o campo do ID de forma automática
-            // como sendo um uuid
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'provider',
