@@ -5,14 +5,14 @@ import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
 interface Request {
-  provider: string;
+  provider_id: string;
   date: Date;
 }
 
 class CreateAppointmentService {
   // Como utilizaremos await, o método execute() precisa ser assíncrono
   // E retornar uma promise
-  public async execute({ date, provider }: Request): Promise<Appointment> {
+  public async execute({ date, provider_id }: Request): Promise<Appointment> {
     const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
     const appointmentDate = startOfHour(date);
@@ -27,7 +27,7 @@ class CreateAppointmentService {
 
     // O método create() não salva por padrão só cria em memória
     const appointment = appointmentsRepository.create({
-      provider,
+      provider_id,
       date,
     });
 
