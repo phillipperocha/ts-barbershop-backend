@@ -3,6 +3,8 @@ import multer from 'multer';
 import uploadConfig from '../config/upload';
 
 import CreateUserService from '../services/CreateUserService';
+// Importaremos o nosso Service de update
+import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
@@ -34,8 +36,23 @@ usersRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'),
   async (request, response) => {
-    console.log(request.file);
-    return response.json({ ok: true });
+    // E vamos agora tratar o erro dessa requisição
+    try {
+      // E começaremos a utilizar o service.
+      const updateUserAvatar = new UpdateUserAvatarService();
+
+      // E vamos executar com dois dados que nós já possuímos.
+      const user = await updateUserAvatar.execute({
+        user_id: request.user.id,
+        avatarFilename: request.file.filename,
+      });
+
+      delete user.password;
+
+      return response.json(user);
+    } catch (err) {
+      return response.status(400).json({ error: err.message });
+    }
   }
 );
 
