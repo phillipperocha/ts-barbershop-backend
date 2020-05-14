@@ -1,7 +1,6 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 
-// Importando o AppError
 import AppError from '../errors/AppError';
 
 import Appointment from '../models/Appointment';
@@ -23,7 +22,6 @@ class CreateAppointmentService {
     );
 
     if (findAppointmentInSameDate) {
-      // Substituindo e não necessitará de código
       throw new AppError('This appointment is alredy booked');
     }
 

@@ -3,9 +3,7 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
 
-// Começar importando o AppError
 import AppError from '../errors/AppError';
-// E trocaremos todos os lugares que chamamos Error por AppError
 
 import User from '../models/User';
 
@@ -26,14 +24,12 @@ class AuthenticateUserService {
     const user = await userRepository.findOne({ where: { email } });
 
     if (!user) {
-      // E adicionaremos o código 401 que é pra não autorizado
       throw new AppError('User not found.', 401);
     }
 
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      // E adicionaremos o código 401 que é pra não autorizado
       throw new AppError('Incorrect password.', 401);
     }
 

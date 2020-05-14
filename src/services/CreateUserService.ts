@@ -1,7 +1,6 @@
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
-// Importando o AppError
 import AppError from '../errors/AppError';
 
 import User from '../models/User';
