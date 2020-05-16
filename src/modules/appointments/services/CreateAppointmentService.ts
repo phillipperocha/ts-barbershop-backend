@@ -1,9 +1,9 @@
 import { startOfHour } from 'date-fns';
 
-import AppError from '@shared/errors/AppError';
-
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
+import AppError from '@shared/errors/AppError';
 
 interface IRequest {
   provider_id: string;
