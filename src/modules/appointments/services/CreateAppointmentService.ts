@@ -25,12 +25,11 @@ class CreateAppointmentService {
       throw new AppError('This appointment is alredy booked');
     }
 
-    const appointment = appointmentsRepository.create({
+    // Temos que utilizar o await pq é um método assíncrono agora
+    const appointment = await appointmentsRepository.create({
       provider_id,
       date,
     });
-
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }
