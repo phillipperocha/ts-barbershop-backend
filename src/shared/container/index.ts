@@ -1,7 +1,7 @@
 import { container } from 'tsyringe';
 
-// Não precisamos nomear, apenas executar
 import '@modules/users/providers';
+import './providers';
 
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
