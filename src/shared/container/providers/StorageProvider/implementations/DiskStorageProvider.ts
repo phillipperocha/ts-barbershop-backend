@@ -1,15 +1,15 @@
-// Vamos importar o fs do node
 import fs from 'fs';
 import path from 'path';
 import uploadConfig from '@config/upload';
 
+import AppError from '@shared/errors/AppError';
 import IStorageProvider from '../models/IStorageProvider';
 
 class DiskStorageProvider implements IStorageProvider {
   public async saveFile(filename: string): Promise<string> {
     await fs.promises.rename(
       path.resolve(uploadConfig.tmpFolder, filename),
-      path.resolve(uploadConfig.uploadFolder, 'uploads', filename)
+      path.resolve(uploadConfig.uploadFolder, filename)
     );
 
     return filename;
@@ -18,10 +18,10 @@ class DiskStorageProvider implements IStorageProvider {
   public async deleteFile(filename: string): Promise<void> {
     const filePath = path.join(uploadConfig.uploadFolder, filename);
 
-    const fileExists = await fs.promises.stat(filePath);
-
-    if (!fileExists) {
-      throw new Error('File does not exists.');
+    try {
+      await fs.promises.stat(filePath);
+    } catch {
+      throw new AppError('File does not exists.');
     }
 
     await fs.promises.unlink(filePath);
