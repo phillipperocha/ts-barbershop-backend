@@ -2,7 +2,6 @@ import { injectable, inject } from 'tsyringe';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
-// Vamos importar agora o IUserTokensRepository
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 import AppError from '@shared/errors/AppError';
 
@@ -19,7 +18,6 @@ class SendForgottenPasswordEmailService {
     @inject('MailProvider')
     private mailProvider: IMailProvider,
 
-    // E vamos injetar nas dependências que iremos criar ainda
     @inject('IUserTokensRepository')
     private userTokensRepository: IUserTokensRepository
   ) { }
@@ -31,7 +29,6 @@ class SendForgottenPasswordEmailService {
       throw new AppError('user does not exists');
     }
 
-    // Após verificar se o usuário existe, geraremos o nosso token
     await this.userTokensRepository.generate(user.id);
 
     this.mailProvider.sendMail(
