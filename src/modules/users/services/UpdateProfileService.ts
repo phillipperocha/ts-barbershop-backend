@@ -7,11 +7,9 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {
-  // Como o service não tem acesso a requisição do express, precisamos pedir o user_id
   user_id: string;
   name: string;
   email: string;
-  // a password é opcional
   old_password?: string;
   password?: string;
 }
@@ -65,7 +63,6 @@ class UpdateProfileService {
       user.password = await this.hashProvider.generateHash(password);
     }
 
-    // como a função já é assíncrona não precisa de await no retorno
     return this.usersRepository.save(user);
   }
 }
