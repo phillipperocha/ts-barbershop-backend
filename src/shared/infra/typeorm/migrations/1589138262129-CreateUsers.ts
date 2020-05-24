@@ -1,6 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-// E vamos trocar por export default
 export default class CreateUsers1589138262129 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -43,7 +42,6 @@ export default class CreateUsers1589138262129 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // E agora vamos deletar a tabela
     await queryRunner.dropTable('users');
   }
 }

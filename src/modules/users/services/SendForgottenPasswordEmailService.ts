@@ -1,5 +1,4 @@
 import { injectable, inject } from 'tsyringe';
-// Importaremos o path para passar o caminho pro arquivo
 import path from 'path';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -33,7 +32,6 @@ class SendForgottenPasswordEmailService {
 
     const { token } = await this.userTokensRepository.generate(user.id);
 
-    // E vamos passar
     const forgottenPasswordTemplate = path.resolve(
       __dirname,
       '..',
@@ -48,12 +46,10 @@ class SendForgottenPasswordEmailService {
       },
       subject: '[Barbershop] Password Recovery',
       templateData: {
-        // Passaremos um file agora
         file: forgottenPasswordTemplate,
         variables: {
           name: user.name,
           token,
-          // E precisamos passar o link, que será do frontend
           link: `${process.env.FRONT_URL}/reset_password?token=${token}`,
         },
       },

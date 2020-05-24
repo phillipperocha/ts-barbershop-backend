@@ -1,7 +1,5 @@
-// Importaremos o Table do TypeORM para criar tabela
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-// Vamos exportar como default para tirar o erro
 export default class CreateAppointments1589073667325
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -42,7 +40,6 @@ export default class CreateAppointments1589073667325
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // E agora vamos deletar a tabela
     await queryRunner.dropTable('appointments');
   }
 }

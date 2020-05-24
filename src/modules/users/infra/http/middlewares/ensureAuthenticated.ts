@@ -3,7 +3,6 @@ import { verify } from 'jsonwebtoken';
 
 import authConfig from '@config/auth';
 
-// Importando o AppError
 import AppError from '@shared/errors/AppError';
 
 interface ITokenPayload {
