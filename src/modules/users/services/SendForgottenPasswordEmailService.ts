@@ -1,4 +1,6 @@
 import { injectable, inject } from 'tsyringe';
+// Importaremos o path para passar o caminho pro arquivo
+import path from 'path';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
@@ -31,6 +33,14 @@ class SendForgottenPasswordEmailService {
 
     const { token } = await this.userTokensRepository.generate(user.id);
 
+    // E vamos passar
+    const forgottenPasswordTemplate = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'forgot_password.hbs'
+    );
+
     await this.mailProvider.sendMail({
       to: {
         name: user.name,
@@ -38,10 +48,13 @@ class SendForgottenPasswordEmailService {
       },
       subject: '[Barbershop] Password Recovery',
       templateData: {
-        template: 'Hello {{name}}. Your recovery token is: {{token}}',
+        // Passaremos um file agora
+        file: forgottenPasswordTemplate,
         variables: {
           name: user.name,
           token,
+          // E precisamos passar o link, que será do frontend
+          link: `${process.env.FRONT_URL}/reset_password?token=${token}`,
         },
       },
     });
