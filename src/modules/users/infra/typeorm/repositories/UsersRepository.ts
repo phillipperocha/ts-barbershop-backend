@@ -1,7 +1,6 @@
 import { getRepository, Repository, Not } from 'typeorm';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-// Importaremos o novo DTO
 import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
@@ -28,7 +27,6 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  // E criaremos o método
   public async findAllProviders({
     except_user_id,
   }: IFindAllProvidersDTO): Promise<User[]> {

@@ -24,7 +24,6 @@ describe('ListProviders', () => {
       password: '123456',
     });
 
-    // E vamos criar o usuário logado
     const loggedUser = await fakeUsersRepository.create({
       name: 'Joseph Doe',
       email: 'josephdoe@example.com',
@@ -35,7 +34,6 @@ describe('ListProviders', () => {
       user_id: loggedUser.id,
     });
 
-    // Vamos utilizar toEqual para comparar se é a mesma variável
     expect(providers).toEqual([user1, user2]);
   });
 });
