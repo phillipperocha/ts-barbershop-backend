@@ -1,4 +1,3 @@
-// Vamos criar agora um array
 module.exports = [
   {
     name: 'default',
@@ -14,16 +13,13 @@ module.exports = [
       migrationsDir: '/src/shared/infra/typeorm/migrations',
     },
   },
-  // E configurar o nosso mongo
   {
     name: 'mongo',
     type: 'mongodb',
     host: process.env.MONGO_HOST,
     port: process.env.MONGO_PORT,
     database: process.env.MONGO_NAME,
-    // Usamos essa configuração para remover um errinho quando utilizamos a configuração do mongo
     useUnifiedTopology: true,
-    // E não serão mais entities, serão schemas
     entities: ['./src/modules/**/infra/typeorm/schemas/*.ts'],
   },
 ];
