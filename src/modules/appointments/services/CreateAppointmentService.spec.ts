@@ -1,6 +1,5 @@
 import AppError from '@shared/errors/AppError';
 
-// Vamos importar o FakeNotificationsRepository
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAppointmentsRepository from '@modules/appointments/repositories/fakes/FakeAppointmentsRepository';
 import CreateAppointmentService from './CreateAppointmentService';
