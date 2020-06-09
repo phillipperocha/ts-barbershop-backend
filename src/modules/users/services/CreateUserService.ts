@@ -2,7 +2,6 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-// Importando o cache provider
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
@@ -23,7 +22,6 @@ class CreateUserService {
     @inject('HashProvider')
     private hashProvider: IHashProvider,
 
-    // Vamos injetar a nova dependência
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider
   ) { }
@@ -43,7 +41,6 @@ class CreateUserService {
       password: hashedPassword,
     });
 
-    // Quando o usuário for criado precisamos invalidar todos os caches que iniciam com providers-list
     await this.cacheProvider.invalidatePrefix('providers-list');
 
     return user;

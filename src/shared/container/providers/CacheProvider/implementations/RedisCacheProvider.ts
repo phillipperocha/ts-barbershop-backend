@@ -13,7 +13,6 @@ export default class RedisCacheProvider implements ICacheProvider {
     await this.client.set(key, JSON.stringify(value));
   }
 
-  // O tipo pode ser qualquer um
   public async recover<T>(key: string): Promise<T | null> {
     const data = await this.client.get(key);
 
@@ -21,7 +20,6 @@ export default class RedisCacheProvider implements ICacheProvider {
       return null;
     }
 
-    // Se estamos salvando utilizando JSON, precisamos dar um parse de volta pro tipo T
     const parsedData = JSON.parse(data) as T;
 
     return parsedData;
