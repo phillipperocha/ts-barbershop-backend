@@ -22,10 +22,12 @@ app.use(
     origin: process.env.FRONT_URL,
   })
 );
+// Need to put the /files route before rateLimiter because we won't be able
+// to show many images at once in our page.
+app.use('/files', express.static(uploadConfig.uploadFolder));
 app.use(rateLimiter);
 app.use(express.json());
 
-app.use('/files', express.static(uploadConfig.uploadFolder));
 app.use(routes);
 
 app.use(errors());
