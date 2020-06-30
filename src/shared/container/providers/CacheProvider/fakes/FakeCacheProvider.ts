@@ -1,7 +1,6 @@
 import ICacheProvider from '../models/ICacheProvider';
 
 interface ICacheData {
-  // chave é string e o valor é uma string tb
   [key: string]: string;
 }
 
@@ -29,7 +28,6 @@ export default class FakeCacheProvider implements ICacheProvider {
   }
 
   public async invalidatePrefix(prefix: string): Promise<void> {
-    // Buscaremos todas as chaves do cache que começam com o prefix:
     const keys = Object.keys(this.cache).filter(key =>
       key.startsWith(`${prefix}:`)
     );
