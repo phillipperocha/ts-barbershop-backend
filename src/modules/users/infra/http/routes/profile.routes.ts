@@ -17,9 +17,9 @@ profileRouter.put(
     [Segments.BODY]: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      old_password: Joi.string(),
-      password: Joi.string(),
-      password_confirmation: Joi.string().required().valid(Joi.ref('password')),
+      old_password: Joi.string().allow('', null),
+      password: Joi.string().allow('', null),
+      password_confirmation: Joi.string().valid(Joi.ref('password')),
     },
   }),
   profileController.update
