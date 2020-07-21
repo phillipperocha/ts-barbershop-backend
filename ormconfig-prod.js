@@ -7,10 +7,10 @@ module.exports = [
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    entities: ['./src/modules/**/infra/typeorm/entities/*.ts'],
-    migrations: ['./src/shared/infra/typeorm/migrations/*.ts'],
+    entities: ['./dist/modules/**/infra/typeorm/entities/*.js'],
+    migrations: ['./dist/shared/infra/typeorm/migrations/*.js'],
     cli: {
-      migrationsDir: '/src/shared/infra/typeorm/migrations',
+      migrationsDir: '/dist/shared/infra/typeorm/migrations',
     },
   },
   {
@@ -22,6 +22,6 @@ module.exports = [
     password: process.env.MONGO_PASS,
     database: process.env.MONGO_NAME,
     useUnifiedTopology: true,
-    entities: ['./src/modules/**/infra/typeorm/schemas/*.ts'],
+    entities: ['./dist/modules/**/infra/typeorm/schemas/*.js'],
   },
 ];

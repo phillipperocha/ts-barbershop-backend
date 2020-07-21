@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   barbershop_postgres:
-    image: 'postgres:11.5-alpine'
+    image: bitnami/postgresql:latest
     container_name: 'barbershop_postgres'
     restart: always
     ports:
@@ -17,11 +17,13 @@ services:
       - barbershop-network
 
   barbershop_redis:
-    image: redis:latest
+    image: bitnami/redis:latest
     container_name: 'barbershop_redis'
     restart: always
     expose:
       - 6379
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASS}
     volumes:
       - barbershop_redis_data:/data
     depends_on: ['barbershop_postgres']
@@ -29,11 +31,15 @@ services:
       - barbershop-network
 
   barbershop_mongo:
-    image: mongo
+    image: bitnami/mongodb:latest
     restart: always
     container_name: 'barbershop_mongo'
     ports:
       - '27017:27017'
+    environment:
+      - MONGODB_USERNAME=${MONGO_USER}
+      - MONGODB_PASSWORD=${MONGO_PASS}
+      - MONGODB_DATABASE=${MONGO_NAME}
     volumes:
       - barbershop_mongo_data:/data/db
     depends_on: ['barbershop_redis']
