@@ -54,6 +54,17 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd ~/apps/barbershop/ts-barbershop-backend/
+          mv ormconfig-prod.js ormconfig.js
+
+    - name: Run migrations on Digital Ocean
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd ~/apps/barbershop/ts-barbershop-backend/
           ./node_modules/.bin/typeorm migration:run
 
     - name: Restart Node server on Digital Ocean
