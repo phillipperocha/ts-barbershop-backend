@@ -34,7 +34,7 @@ jobs:
         source: ".,!node_modules"
         target: "~/apps/barbershop/ts-barbershop-backend/"
 
-    - name: Install dependencies on Digital Ocean
+    - name: Install dependencies, put ormconfig-prod on ormconfig, run migrations and restart server on Digital Ocean
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -44,6 +44,7 @@ jobs:
         script: |
           cd ~/apps/barbershop/ts-barbershop-backend/
           yarn
+          cp ormconfig-prod.js ormconfig.js
 
     - name: Copying 
       uses: appleboy/ssh-action@master
@@ -55,23 +56,6 @@ jobs:
         script: |
           cd ~/apps/barbershop/ts-barbershop-backend/
           cp ormconfig-prod.js ormconfig.js
-
-    - name: Run migrations on Digital Ocean
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd ~/apps/barbershop/ts-barbershop-backend/
           ./node_modules/.bin/typeorm migration:run
+          pm2 restart barbershop-api
 
-    - name: Restart Node server on Digital Ocean
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: pm2 restart barbershop-api
