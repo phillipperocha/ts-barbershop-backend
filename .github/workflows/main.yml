@@ -45,7 +45,7 @@ jobs:
           cd ~/apps/barbershop/ts-barbershop-backend/
           yarn
 
-    - name: Run migrations on Digital Ocean
+    - name: Copying 
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -54,7 +54,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd ~/apps/barbershop/ts-barbershop-backend/
-          mv ormconfig-prod.js ormconfig.js
+          cp ormconfig-prod.js ormconfig.js
 
     - name: Run migrations on Digital Ocean
       uses: appleboy/ssh-action@master
