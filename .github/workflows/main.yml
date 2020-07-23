@@ -45,17 +45,5 @@ jobs:
           cd ~/apps/barbershop/ts-barbershop-backend/
           yarn
           cp ormconfig-prod.js ormconfig.js
-
-    - name: Copying 
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd ~/apps/barbershop/ts-barbershop-backend/
-          cp ormconfig-prod.js ormconfig.js
           ./node_modules/.bin/typeorm migration:run
           pm2 restart barbershop-api
-
