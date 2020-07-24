@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import 'dotenv/config';
 
 import express, { Request, Response, NextFunction } from 'express';
-// import cors from 'cors';
+import cors from 'cors';
 import { errors } from 'celebrate';
 import 'express-async-errors';
 
@@ -17,11 +17,14 @@ import routes from '@shared/infra/http/routes';
 
 const app = express();
 
-// app.use(
-//   cors({
-//     origin: process.env.FRONT_URL,
-//   })
-// );
+app.use(
+  cors()
+  // will be like this if we want to block everything else
+  // cors({
+  //   origin: process.env.FRONT_URL,
+  // })
+);
+
 // Need to put the /files route before rateLimiter because we won't be able
 // to show many images at once in our page.
 app.use('/files', express.static(uploadConfig.uploadFolder));
