@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import 'dotenv/config';
 
 import express, { Request, Response, NextFunction } from 'express';
-import cors from 'cors';
+// import cors from 'cors';
 import { errors } from 'celebrate';
 import 'express-async-errors';
 
