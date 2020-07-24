@@ -17,11 +17,11 @@ import routes from '@shared/infra/http/routes';
 
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.FRONT_URL,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.FRONT_URL,
+//   })
+// );
 // Need to put the /files route before rateLimiter because we won't be able
 // to show many images at once in our page.
 app.use('/files', express.static(uploadConfig.uploadFolder));
