@@ -9,20 +9,19 @@ import 'express-async-errors';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
+import routes from '@shared/infra/http/routes';
+import WebSocketProvider from '@shared/container/providers/WebSocketProvider';
 
 import '@shared/infra/typeorm';
 import '@shared/container';
 
-import routes from '@shared/infra/http/routes';
-
 const app = express();
 
+// We will open just for our app now
 app.use(
-  cors()
-  // will be like this if we want to block everything else
-  // cors({
-  //   origin: process.env.FRONT_URL,
-  // })
+  cors({
+    origin: process.env.FRONT_URL,
+  })
 );
 
 // Need to put the /files route before rateLimiter because we won't be able
@@ -51,6 +50,8 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   });
 });
 
-app.listen(3333, () => {
+const socket = new WebSocketProvider();
+const server = socket.initSocket(app);
+server.listen(3333, () => {
   console.log('🚀 Server started on port 3333');
 });
