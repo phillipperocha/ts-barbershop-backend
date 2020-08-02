@@ -4,6 +4,8 @@ import { createServer, Server } from 'http';
 
 import Events from '@shared/container/providers/WebSocketProvider/enums/Events';
 import { IChatMessage } from '@shared/container/providers/WebSocketProvider/dtos/IChatMessage';
+import ensureAuthenticatedWebSocketMiddleware from '@modules/users/infra/http/middlewares/ensureAuthenticatedWebSocket';
+import UserWebSocketsRepository from '@modules/users/infra/typeorm/repositories/UserWebSocketsRepository';
 
 import IWebSocketProvider from '../models/IWebSocketProvider';
 
@@ -26,13 +28,25 @@ class SocketIOWebSocketProvider implements IWebSocketProvider {
   public initSocket(app: Application): Server {
     const server = createServer(app);
     this.io = socketIo(server);
-    this.listen(this.io);
     return server;
   }
 
-  private listen(io: SocketIO.Server): void {
+  public listen(io: SocketIO.Server): void {
+    const userWebSocketsRepository = new UserWebSocketsRepository();
+
     io.on(Events.CONNECT, (socket: any) => {
-      console.log('Client connected');
+      const socketID = socket.id;
+      try {
+        const userID = ensureAuthenticatedWebSocketMiddleware(socket);
+
+        userWebSocketsRepository.create({
+          websocket_id: socketID,
+          recipient_id: userID,
+        });
+      } catch {
+        console.log('Client disconnected by force');
+        userWebSocketsRepository.delete(socketID);
+      }
 
       socket.on(Events.MESSAGE, (m: IChatMessage) => {
         console.log('[server](message): %s', JSON.stringify(m));
@@ -40,6 +54,7 @@ class SocketIOWebSocketProvider implements IWebSocketProvider {
       });
 
       socket.on(Events.DISCONNECT, () => {
+        userWebSocketsRepository.delete(socketID);
         console.log('Client disconnected');
       });
     });

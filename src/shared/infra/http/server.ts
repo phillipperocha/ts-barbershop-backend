@@ -12,20 +12,17 @@ import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
 import routes from '@shared/infra/http/routes';
 import WebSocketProvider from '@shared/container/providers/WebSocketProvider';
 
-import '@shared/infra/typeorm';
+import typeormConnections from '@shared/infra/typeorm';
 import '@shared/container';
 
 const app = express();
 
-// We will open just for our app now
 app.use(
   cors({
     origin: process.env.FRONT_URL,
   })
 );
 
-// Need to put the /files route before rateLimiter because we won't be able
-// to show many images at once in our page.
 app.use('/files', express.static(uploadConfig.uploadFolder));
 app.use(rateLimiter);
 app.use(express.json());
@@ -52,6 +49,10 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
 
 const socket = new WebSocketProvider();
 const server = socket.initSocket(app);
-server.listen(3333, () => {
-  console.log('🚀 Server started on port 3333');
+
+typeormConnections.then(() => {
+  server.listen(3333, () => {
+    console.log('🚀 Server started on port 3333');
+    socket.listen(socket.io);
+  });
 });
